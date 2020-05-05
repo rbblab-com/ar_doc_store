@@ -134,12 +134,14 @@ class Building < ActiveRecord::Base
   json_attribute :stories, as: :integer
   json_attribute :height, as: :float
   json_attribute :architects, as: :array
+  json_attribute :price, as: :decimal
   json_attribute :construction, as: :enumeration, values: %w{concrete wood brick plaster steel}
   json_attribute :multiconstruction, as: :enumeration, values: %w{concrete wood brick plaster steel}, multiple: true
   json_attribute :strict_enumeration, as: :enumeration, values: %w{happy sad glad bad}, strict: true
   json_attribute :strict_multi_enumeration, as: :enumeration, values: %w{happy sad glad bad}, multiple: true, strict: true
   embeds_many :entrances
   embeds_many :restrooms
+
 end
 
 class PurchaseOrder < ActiveRecord::Base
