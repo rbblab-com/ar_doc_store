@@ -92,19 +92,20 @@ module ArDocStore
 
       # Pretty much the same as define_attribute_method but skipping the matches that create read and write methods
       def define_virtual_attribute_method(attr_name)
-        attr_name = attr_name.to_s
         attribute_method_matchers.each do |matcher|
           method_name = matcher.method_name(attr_name)
-          next if instance_method_already_implemented?(method_name)
-          next if %w{attribute attribute= attribute_before_type_cast}.include? matcher.method_missing_target
-          generate_method = "define_method_#{matcher.method_missing_target}"
-          if respond_to?(generate_method, true)
-            send(generate_method, attr_name)
-          else
-            define_proxy_call true, generated_attribute_methods, method_name, matcher.method_missing_target, attr_name.to_s
+          next if %w{attriute attribute= attribute_before_type_cast}.include? matcher.target
+          unless instance_method_already_implemented?(method_name)
+            generate_method = "define_method_#{matcher.target}"
+
+            if respond_to?(generate_method, true)
+              #require 'pry'; binding.pry
+              send(generate_method, attr_name.to_s)
+            else
+              define_proxy_call true, generated_attribute_methods, method_name, matcher.target, attr_name.to_s
+            end
           end
         end
-        attribute_method_matchers_cache.clear
       end
 
 

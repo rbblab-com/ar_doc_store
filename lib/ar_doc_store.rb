@@ -18,6 +18,7 @@ module ArDocStore
     autoload :EmbedsOneAttribute, "ar_doc_store/attribute_types/embeds_one_attribute"
     autoload :EmbedsManyAttribute, "ar_doc_store/attribute_types/embeds_many_attribute"
     autoload :DatetimeAttribute, "ar_doc_store/attribute_types/datetime_attribute"
+    autoload :DecimalAttribute, "ar_doc_store/attribute_types/decimal_attribute"
   end
 
   @mappings = Hash.new
@@ -29,6 +30,7 @@ module ArDocStore
   @mappings[:string]      = 'ArDocStore::AttributeTypes::StringAttribute'
   @mappings[:uuid]        = 'ArDocStore::AttributeTypes::UuidAttribute'
   @mappings[:datetime]    = 'ArDocStore::AttributeTypes::DatetimeAttribute'
+  @mappings[:decimal]     = 'ArDocStore::AttributeTypes::DecimalAttribute'
 
   def self.mappings
     @mappings
@@ -44,6 +46,8 @@ module ArDocStore
       return true
     elsif bool.is_a?(FalseClass)
       return false
+    elsif bool.is_a?(BigDecimal)
+      return bool > 0
     else
       return nil
     end
@@ -52,7 +56,7 @@ module ArDocStore
   def self.clobber_attribute_method!
     ArDocStore::Storage::ClassMethods.module_eval do
       def attribute(*args)
-        json_attribute *args
+        json_attribute(*args)
       end
     end
   end

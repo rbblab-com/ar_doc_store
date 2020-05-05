@@ -82,11 +82,11 @@ module ArDocStore
         if @_initialized
           old_value = attributes[attribute]
           if attribute.to_s != 'id' && value != old_value
-            if Rails.version >= '5.2.0'
+            if respond_to? "#{attribute}_will_change!".to_sym
+              public_send :"#{attribute}_will_change!"
+            else
               set_attribute_was(attribute, old_value)
               mutations_from_database.force_change(attribute)
-            else
-              public_send :"#{attribute}_will_change!"
             end
             if parent
               parent.public_send("#{parent.json_column}_will_change!")
