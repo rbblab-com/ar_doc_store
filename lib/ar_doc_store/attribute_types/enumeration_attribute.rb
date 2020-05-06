@@ -30,7 +30,7 @@ module ArDocStore
             dictionary
           end
           define_singleton_method "#{key}_for_select" do
-            dictionary.map {k=>ActiveSupport::Inflector.titleize(k)} }
+            dictionary.map{ |k| {k=>ActiveSupport::Inflector.titleize(k)} }
           end
         end
       end

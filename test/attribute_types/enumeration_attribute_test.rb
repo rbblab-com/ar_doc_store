@@ -1,12 +1,12 @@
 require_relative './../test_helper'
 
 class EnumerationAttributeTest < MiniTest::Test
-  
+
   def test_simple_enumeration_attribute
     b = Building.new construction: 'wood'
     assert_equal 'wood', b.construction
   end
-  
+
   def test_multiple_enumeration_attribute
     b = Building.new multiconstruction: %w{wood plaster}
     assert_equal %w{wood plaster}, b.multiconstruction
@@ -17,7 +17,7 @@ class EnumerationAttributeTest < MiniTest::Test
     b.valid?
     assert b.errors[:strict_enumeration]
   end
-  
+
   def test_unstrict_enumeration_attribute_allows_assignment_of_choice_not_in_the_list
     b = Building.new construction: 'plastic'
     assert_equal 'plastic', b.construction
@@ -49,14 +49,19 @@ class EnumerationAttributeTest < MiniTest::Test
     b.valid?
     assert b.errors[:strict_multi_enumeration].empty?
   end
-  
+
   def test_enumeration_has_choices_to_use_for_select
     assert Building.construction_choices.present?
+  end
+
+  def test_enumeration_has_for_select
+    assert_equal Building.construction_for_select.first, {"concrete"=>"Concrete"}
   end
 
   def test_question_mark_method
     b = Building.new strict_multi_enumeration: %w{glad bad}
     assert_equal true, b.strict_multi_enumeration?
   end
+
 
 end
