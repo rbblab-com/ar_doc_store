@@ -29,6 +29,9 @@ module ArDocStore
           define_singleton_method "#{key}_choices" do
             dictionary
           end
+          define_singleton_method "#{key}_for_select" do
+            map(key){ {k=>ActiveSupport::Inflector.titleize(k)} }
+          end
         end
       end
 

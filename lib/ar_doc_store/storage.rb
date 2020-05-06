@@ -99,7 +99,6 @@ module ArDocStore
             generate_method = "define_method_#{matcher.target}"
 
             if respond_to?(generate_method, true)
-              #require 'pry'; binding.pry
               send(generate_method, attr_name.to_s)
             else
               define_proxy_call true, generated_attribute_methods, method_name, matcher.target, attr_name.to_s

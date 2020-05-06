@@ -19,7 +19,6 @@ class DirtyAttributeTest < MiniTest::Test
     skip "doesnt work atm"
     b = Building.new
     r = b.build_restroom restroom_type: 'dirty'
-    require 'pry'; binding.pry
     assert !r.changes_to_save
     r.restroom_type = 'nasty'
     assert r.will_save_change_to_attribute?(:restroom)
