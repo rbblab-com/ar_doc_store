@@ -11,7 +11,7 @@ module ArDocStore
           store_accessor json_column, key
           define_method key, -> {
             value = read_store_attribute(json_column,key)
-            value = BigDecimal(value) unless value.nil?
+            value = BigDecimal(value) unless value.nil? || value.empty?
             value or default_value
           }
           define_method "#{key}=".to_sym, -> (value) {
